@@ -1,0 +1,81 @@
+---
+title: "Problem Set 1: R, R Markdown, Conceptual Foundations of ML"
+author: "Candidate Number: "
+date: |
+  | `r format(Sys.time(), '%d %B %Y')`
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(1)
+```
+
+## Part 1: Short Answer Questions
+
+1. Imagine you have been hired as a data consultant. Your client has given you the task of building a classifier for a new dataset they have constructed. In each of the following 5 scenarios, would you recommend a flexible statistical learning method or an inflexible approach? Why? (2-3 sentences per scenario)
+    a) There is a large sample size of $N=5 \text{ billion}$, a large number of predictors $p=100,000$, and the client is limited in their computing resources.
+    b) Large sample size of $N=5 \text{ billion}$, and small number of predictors $p=6$.
+    c) Large number of predictors, $p=125,000$, sample size $N=2000$ is relatively small.
+    d) Based on exploratory analysis of the data, it appears that the predictors and the response have a non-linear relationship.
+    e) The error term has very large variance.
+
+2. How is a **parametric** approach different from a **non-parametric** approach to statistical learning? How does each approach go about estimating $f$? Name three advantages and three disadvantages of each approach. (2-3 sentences per approach)
+
+3. _ISL 2.4 Exercise 2_
+
+4. _ISL 2.4 Exercise 3_
+
+5. What are the two kinds of "big data" Rocio Titiunik wrote about in her paper on big data? What are some benefits and drawbacks of each kind of big data analysis for social scientific inquiry? Can either kind of big data solve the fundamental problem of causal inference? (5-10 sentences)
+
+## Part 2: Coding Questions
+
+6. In the next problem set, we will use `for` loops and `if`/`else` statements to implement $k$-fold cross-validation. To prepare you for this, we'll practice them using the [fibbonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number). The fibbonacci sequence is a sequence where each number is the sum of the two preceding ones: $(0,) 1, 1, 2, 3, 5, \dots$. Using `for` loops and `if`/`else` statements, write code that will output the sum of the first 50 terms of the fibbonacci sequence. Include zero as the first term.
+
+```{r}
+
+```
+
+7. _ISL 2.4 Exercise 10_ (Note: 1. You will need to install the `MASS` library from CRAN. 2. Please break text out of code blocks when explaining or reporting your answers.)
+
+```{r}
+# Code for 10 a) goes here
+
+```
+
+```{r}
+# Code for 10 b) goes here
+
+```
+
+```{r}
+# Code for 10 c) goes here
+
+```
+
+```{r}
+# Code for 10 d) goes here
+
+```
+
+```{r}
+# Code for 10 e) goes here
+
+```
+
+```{r}
+# Code for 10 f) goes here
+
+```
+
+```{r}
+# Code for 10 g) goes here
+
+```
+
+```{r}
+# Code for 10 h) goes here
+
+```
+
+8. Using R Markdown, write some notes on the differences between supervised and unsupervised approaches to statistical learning. Use headers of different sizes, italic and bold text, numbered lists, bullet lists, and hyperlinks. If you would like, use inline [LaTeX](https://en.wikipedia.org/wiki/LaTeX) (math notation).
