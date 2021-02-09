@@ -21,6 +21,7 @@ Here we install and load the `ISLR` and `class` packages using the `install.pack
 #install.packages('class')
 library(ISLR)
 library(class)
+library(dplyr)
 ```
 
 ## Global environment
@@ -135,18 +136,30 @@ summary(Y)
 F1 is a performance measure that is less sensitive to class imbalance. First, using the confusion matrix, calculate the components of the F1 score: precision and recall.
 
 ```{r}
-
+# positive class is No
+tp<-sum(test.Y[which(pred.Y=='No')]=='No')
+fp<-sum(test.Y[which(pred.Y=='No')]=='Yes')
+prec<-tp/(tp+fp)
+recall<-tp/sum(test.Y=='No')
 ```
 
 Using precision and recall, calculate F1.
 
 ```{r}
-
+F1<-2*((prec*recall)/(prec+recall))
 ```
 
 Write a function `F1()` that takes as input the true y and the predicted y and returns the F1 score. If you have trouble writing a function, reference ISL lab 3.6.7
 
 ```{r}
+
+F1<-function(pred,ref){
+  tp<-sum(ref[which(pred=='No')]=='No')
+  fp<-sum(ref[which(pred=='No')]=='Yes')
+  prec<-tp/(tp+fp)
+  recall<-tp/sum(ref=='No')
+  2*((prec*recall)/(prec+recall))
+}
 
 ```
 
@@ -155,7 +168,17 @@ Write a function `F1()` that takes as input the true y and the predicted y and r
 Evaluate models with different values of K using F1. Which one performs best? 
 
 ```{r}
+set.seed(1)
+k<-1:100 %>% as.data.frame()
+colnames(k)<-'k'
+for (i in 1:100){
+pred<-knn(train.X, test.X, train.Y, k=i)
+k[i,]<-F1(pred,test.Y)
+}
+which(k$k==max(k$k))
 
+k<-k %>% mutate(n=1:100)
+plot(k$n,k$k)
 ```
 
 ## Challenge

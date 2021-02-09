@@ -67,10 +67,20 @@ Expanding this notebook, complete the following tasks:
 2) In the first chunk find the sum of 75, 83, 93, 34, 75 and 81.  
 3) In the second chunk divide 75 by 5, then add 43 and then multiply 6
 4) In the third chunk compute the average (mean) of the values entered in the first chunk. Note: searching the book and the internet will be very important in this class.  You might find useful information [here](http://www.cyclismo.org/tutorial/R/basicOps.html)
+```{r}
+chunk1<-sum(75,83,93,34,75,81)
+```
+```{r}
+((75/5)+43)*6
+```
+```{r}
+mean(chunk1)
+```
 
 # Exercise 2
 
 1) Are the following chunks different?  Why or why not?
+Chunks are the same. 
 
 ```{r}
 7 * 5 / 8 * 3
@@ -83,7 +93,7 @@ Expanding this notebook, complete the following tasks:
 2) Evaluate $$ \left | \frac{5^{25-2}}{6-4+1*2} \right | $$ Hint: use '^' to exponentiate. Look up the function to calculate an absolute value on [https://www.statmethods.net/management/functions.html](https://www.statmethods.net/management/functions.html)
 
 ```{r}
-
+abs((5^(25-2))/(6-4+(1*2)))
 ```
 
 ## Prepare for submission
