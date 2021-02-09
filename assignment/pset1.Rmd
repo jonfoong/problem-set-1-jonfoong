@@ -1,6 +1,6 @@
 ---
 title: "Problem Set 1: R, R Markdown, Conceptual Foundations of ML"
-author: "Candidate Number: "
+author: "Candidate Number: 18195"
 date: |
   | `r format(Sys.time(), '%d %B %Y')`
 output: pdf_document
@@ -19,63 +19,145 @@ set.seed(1)
     c) Large number of predictors, $p=125,000$, sample size $N=2000$ is relatively small.
     d) Based on exploratory analysis of the data, it appears that the predictors and the response have a non-linear relationship.
     e) The error term has very large variance.
+    
+a) Inflexible approach. The large number of sample size relative to predictors means that using a flexible approach should not result in overfitting, because there is enough variation per predictor that reduces the chances of the nodel memorising the dataset. However being flexible also means estimating more parameters which, given the company's lack of computing power, may not be feasible, 
+
+b) Flexible approach. If computing power is not a constraint, given the large number of observations a flexible approach should not lead to overfit even if the number of predictors is relatively small. 
+
+c) Inflexible approach. Because sample size is small but p is very large, using a flexible approach may lead to overfit where the training algorithm simply memorises the data. In this case using an inflexible approach like OLS regression may be better at predicting new data. 
+
+d) Flexible approach. If the relationship is non linear then traditional methods like OLS may not fit the model very well. In theory OLS can still work if enough polynomials are added but this will depend on how many observations there are and how flexible the function is - if n is too small then the model is likely to overfit, and if the function is extremely flexible then a large number of polynomials will be required which also tends to generate overfit. 
+
+e) If the error term has a very large variance it means that a lot of the variance is left unexplained by the current model. This may be the case when using inflexible models that are unable to fit flexible functional forms. In this case it may be wise to use a more flexible model, but not too flexible such that it overfits. 
+
 
 2. How is a **parametric** approach different from a **non-parametric** approach to statistical learning? How does each approach go about estimating $f$? Name three advantages and three disadvantages of each approach. (2-3 sentences per approach)
 
+Parametric: 
+
+Advantage:
+1. Parametric approaches like OLS will always produce unbiased betas which allows us to perform causal inference.
+2. Computationally it is less costly since it does not require large n or large p to perform. 
+
+Disadvantage:
+1. Because we assume a parametric form for $f$, the model we choose will usually not match the true unknown form of f. 
+2. Will perform poorly if the true functional form is very flexible. 
+
+
+Non-parametric: 
+
+Advantage:
+1. Non-parametric methods do not make explicit assumptions about the functional form of f, which makes it much more flexible than parametric methods. 
+2. Produces very good predictions 
+3. We do not need to understand what the model does with the Ps, only that it makes good predictions. 
+
+Disadvantage:
+1. Because no assumptions about parameters are made, large N is required.
+2. Being too smooth can result in overfitting. 
+3. Can be computationally costly and time consuming since large n and large p is required
+
 3. _ISL 2.4 Exercise 2_
+
+a.This is a regression problem because CEO salary is a a continuous variable. We are also interested in 
+causal inference since the focus is on the factors (x) that affects CEO salary (y). n=500 and p=3.
+
+b. Classification problem since the outcome is a discrete choice between success and failure. We are interested in prediction since we want to predict if the new product is a success or failure. n=20, p=13.
+
+c. Regression problem since the outcome percentage change is a continuous variable. We are interested in prediction. n=52, p=3.
 
 4. _ISL 2.4 Exercise 3_
 
 5. What are the two kinds of "big data" Rocio Titiunik wrote about in her paper on big data? What are some benefits and drawbacks of each kind of big data analysis for social scientific inquiry? Can either kind of big data solve the fundamental problem of causal inference? (5-10 sentences)
+
+Big data can be large P or large N. Having a larger N is useful since there is more variation in the data and this may help us produce more accurate betas. However, no amnount of N can solve the problem of causal inference if the model is wrongly specified. For instance, if there is an omitted variable that is highly correlated with the error term. In addition, there is no N large enough that can cover all possible distributions that generated the data in the first place, and thus increasing N does not guarantee that we will converge on the true parameter. 
+
+Large P data allows us to reduce the problem of omitted variables and also estimate more flexible functional forms. In theory, if we have all the P in the world that could be correlated to a certain Y, we could circumvent the fundamental problem of causal inference. However, the problem is that this only holds if we have access to _all_ variables necessary for exogeneity to hold, which is highly implausible. Even if this were possible, methods that allow for p>n require sparsity assumptions which can only be justified by strong theory, 
 
 ## Part 2: Coding Questions
 
 6. In the next problem set, we will use `for` loops and `if`/`else` statements to implement $k$-fold cross-validation. To prepare you for this, we'll practice them using the [fibbonacci sequence](https://en.wikipedia.org/wiki/Fibonacci_number). The fibbonacci sequence is a sequence where each number is the sum of the two preceding ones: $(0,) 1, 1, 2, 3, 5, \dots$. Using `for` loops and `if`/`else` statements, write code that will output the sum of the first 50 terms of the fibbonacci sequence. Include zero as the first term.
 
 ```{r}
-
+v<-c(0,1)
+for (i in 1:48){
+  v[i+2]<-v[i+1]+v[i]
+}
+v
 ```
 
 7. _ISL 2.4 Exercise 10_ (Note: 1. You will need to install the `MASS` library from CRAN. 2. Please break text out of code blocks when explaining or reporting your answers.)
 
 ```{r}
 # Code for 10 a) goes here
+library(MASS)
+dim(Boston)
+?Boston
 
 ```
+506 rows and 14 columns. Each row contains an observation at the town level, while the columns represent town level variables. 
 
 ```{r}
 # Code for 10 b) goes here
+attach(Boston)
+plot(dis,crim)
+plot(black,crim)
+plot(medv,crim)
 
 ```
+It appears that towns very close to employment centres have high crim rate, but this drops sharply once the distance increases slightly. 
+
+There also seems to be no correlation between the presence of black minority and crime rates.
+
+Finally, as the median value of the property in the town increases, the crime rate decreases. 
 
 ```{r}
 # Code for 10 c) goes here
-
+summary(lm(crim~.,data=Boston))
 ```
-
+Proportion of residential land zoned for lots over 25,000 sq.ft and an index of accessibility to radial highways are positively significantly associated with higher crime rates, while distance to employment centres, proportion of blacks, and the median value of owner occupied homes are negatively significantly associated with lower crime rates. 
 ```{r}
 # Code for 10 d) goes here
-
+library(dplyr)
+plot(density(Boston$crim))
+plot(density(Boston$ptratio))
+p<-scale(Boston) %>% as.data.frame()
+plot(density(p$crim))
+plot(density(p$tax))
+plot(density(p$ptratio))
 ```
-
+Some Boston suburbs are as far as 10 SD higher than the mean with regards to crime rate. As for tax rates, there are two significant peaks; about 60% of suburbs are between 0 to -1 SD away from the mean while another 40% are between 1-2 SD higher than the mean. Finally, the distribution of student pupil ratio is slightly left skewed with about 50% of the suburbs at 1 SD above the mean. 
 ```{r}
 # Code for 10 e) goes here
+sum(Boston$chas)
 
 ```
-
+There are 35 suburbs that bound the Charles river
 ```{r}
 # Code for 10 f) goes here
-
+summary(Boston)
 ```
-
+The median student teacher ratio in this dataset is 19.05.
 ```{r}
 # Code for 10 g) goes here
-
+ind<-which(Boston$medv==min(Boston$medv))
+Boston[ind,]
+summary(Boston)
 ```
-
+There are two suburbs that have the minimum median value of owner occupied homes. Both these suburbs have 0 proportion of residential land zoned for lots over 25,000 sq.ft, do not bound the Charles river, are in the 4th quartile of proportion of non-retail business acres per town and nitrogen oxide concentration, in the 1st quartile of average number of rooms per dwelling, are completely built prior to 1940 for owner occupied homes, are very close to employment centres (1st quartile), are the highest in the dataset in terms of accessibility to radial highways, are verging on the 4th quartile when it comes to property tax, have a student teacher ratio that's verging on the 4th quartile, are in the 3rd and 4th quartile respectively in terms of proportion of blacks, are in the 4th quartile when it comes to lower status of the population. 
 ```{r}
 # Code for 10 h) goes here
+sum(Boston$rm>7)
+sum(Boston$rm>8)
+plot(density(Boston$crim),col='red');lines(density(Boston%>%filter(rm>8)%>%.$crim),col='blue')
+plot(density(Boston$medv),col='red');lines(density(Boston%>%filter(rm>8)%>%.$medv),col='blue')
+plot(density(Boston$ptratio),col='red');lines(density(Boston%>%filter(rm>8)%>%.$ptratio),col='blue')
+plot(density(Boston$tax),col='red');lines(density(Boston%>%filter(rm>8)%>%.$tax),col='blue')
 
 ```
+The number of suburbs with more than an average of 7 and 8 rooms per dwelling are 64 and 13 respectively. Crime statistics and taxes in suburbs with an average of more than 8 rooms per dwelling is similar to the larger dataset, but the median value of its houses are significantly higher. Its student teacher ratios are also lower, 
+
 
 8. Using R Markdown, write some notes on the differences between supervised and unsupervised approaches to statistical learning. Use headers of different sizes, italic and bold text, numbered lists, bullet lists, and hyperlinks. If you would like, use inline [LaTeX](https://en.wikipedia.org/wiki/LaTeX) (math notation).
+
+# Supervised vs Unsupervised Learning
+Supervised learning refers to when there is a target response $y$ and corresponding predictors. Unsupervised learning refers to when there is no target response, merely observations. In supervised learning what we are interested in is prediction, specifically prediction of $y$. If we have a set of $y$ then we are able to train the data set and test it to compute the accuracy, In unsupervised learning like cluster analysis, we are not predicting anything. Instead, the algorithm looks at the data and sorts them into groups by looking for patterns. 
